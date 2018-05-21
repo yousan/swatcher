@@ -33,9 +33,9 @@ function set_crontab() {
 }
 
 # do
-#set_config
+set_config
 set_script
-#set_crontab
+set_crontab
 
 # you can run using below command,
 # ./etc/swatch.sh
