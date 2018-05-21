@@ -1,6 +1,4 @@
 #!/bin/bash
-sudo su -
-
 SWATCH_CONF_DIR=/etc/swatch/conf
 [ ! -d $SWATCH_CONF_DIR ] && mkdir -p $SWATCH_CONF_DIR && cd $SWATCH_CONF_DIR
 
