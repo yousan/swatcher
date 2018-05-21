@@ -5,6 +5,6 @@ curl https://raw.githubusercontent.com/yousan/swatch/master/etc/swatch.sh | sudo
 ```
 
 # AND!! 
-You should change INCOMING WEBHOOK URI in /usr/bin/slack_notify.sh
+You should change `<YOUR_INCOMING_WEBHOOK_URI>` in `/usr/bin/slack_notify.sh`
 
-<YOUR_INCOMING_WEBHOOK_URI>
+
