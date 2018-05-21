@@ -39,5 +39,6 @@ function set_crontab() {
 
 # do
 set_config
-set_script
 set_crontab
+set_script
+
