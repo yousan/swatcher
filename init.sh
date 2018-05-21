@@ -41,3 +41,6 @@ set_config
 set_crontab
 set_script
 
+
+echo "You should change INCOMING_WEBHOOK_URI in /usr/bin/slack_notify.sh"
+
