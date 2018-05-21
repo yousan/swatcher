@@ -1,9 +1,9 @@
 #!/bin/bash
 USERNAME="SERVER GATEKEEPER"
 CHANNEL="#bot"
-ICON=":golem:"
+ICON=":ghost:"
 TEXT=$*
-WEBHOOK_URL="https://hooks.slack.com/services/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"
+WEBHOOK_URL="<YOUR_INCOMING_WEBHOOK_URI>"
 
 author="sa9sha9"
 

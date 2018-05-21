@@ -11,10 +11,10 @@ function set_config() {
 }
 
 function set_script() {
-    AUTH_ALERT_SCRIPT_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/authAlert.sh"
-    curl $AUTH_ALERT_SCRIPT_URL > /usr/bin/authAlert.sh
-    chmod 755 /usr/bin/authAlert.sh
-    echo "saved into /usr/bin/authAlert.sh"
+    AUTH_ALERT_SCRIPT_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/slack_notify.sh"
+    curl $AUTH_ALERT_SCRIPT_URL > /usr/bin/slack_notify.sh
+    chmod 755 /usr/bin/slack_notify.sh
+    echo "saved into /usr/bin/slack_notify.sh"
 }
 
 function set_crontab() {

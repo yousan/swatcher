@@ -2,4 +2,4 @@
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-@reboot root ps auxwwww | grep "/usr/bin/swatch -c /etc/swatch/conf/secure.conf -t/var/log/auth.log" | grep -v 'grep' >/dev/null || /usr/bin/swatch --daemon --awk-field-syntax / -c /etc/swatch/conf/secure.conf -t /var/log/auth.log
+@hourly root ps auxwwww | grep "/usr/bin/swatch -c /etc/swatch/conf/secure.conf -t/var/log/auth.log" | grep -v 'grep' >/dev/null || /usr/bin/swatch --daemon --awk-field-syntax / -c /etc/swatch/conf/secure.conf -t /var/log/auth.log
