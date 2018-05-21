@@ -1,5 +1,7 @@
 #!/bin/bash
 
+read -p "YOUR SLACK INCOMING WEBHOOK URI:" INCOMING_WEBHOOK_URI
+
 function set_config() {
     SWATCH_CONF_DIR=/etc/swatch/conf
     [ ! -d $SWATCH_CONF_DIR ] && mkdir -p $SWATCH_CONF_DIR && cd $SWATCH_CONF_DIR
@@ -12,9 +14,8 @@ function set_config() {
 }
 
 function set_script() {
-    read -p "YOUR SLACK INCOMING WEBHOOK URI:" uri
     SLACK_NOTIFY_SCRIPT_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/slack_notify.sh"
-    curl $SLACK_NOTIFY_SCRIPT_URL | sed -e "s/<YOUR_INCOMING_WEBHOOK_URI>/$uri/g" | sudo tee /usr/bin/slack_notify.sh
+    curl $SLACK_NOTIFY_SCRIPT_URL | sed -e "s/<YOUR_INCOMING_WEBHOOK_URI>/$INCOMING_WEBHOOK_URI/g" | sudo tee /usr/bin/slack_notify.sh
     chmod 0755 /usr/bin/slack_notify.sh
     
     echo "saved into /usr/bin/slack_notify.sh"
