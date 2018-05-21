@@ -12,7 +12,7 @@ function set_config() {
 
 function set_script() {
     AUTH_ALERT_SCRIPT_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/authAlert.sh"
-    curl $ALERT_SCRIPT_URL > /usr/bin/authAlert.sh
+    curl $AUTH_ALERT_SCRIPT_URL > /usr/bin/authAlert.sh
     chmod 755 /usr/bin/authAlert.sh
     echo "saved into /usr/bin/authAlert.sh"
 }
@@ -33,9 +33,9 @@ function set_crontab() {
 }
 
 # do
-set_config
+#set_config
 set_script
-set_crontab
+#set_crontab
 
 # you can run using below command,
 # ./etc/swatch.sh
