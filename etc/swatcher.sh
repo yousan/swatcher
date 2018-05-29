@@ -14,11 +14,11 @@ function check_dist() {
 # watch for ssh
 DISTRIBUTION=$(check_dist)
 if [[ $DISTRIBUTION =~ ubuntu || $DISTRIBUTION =~ debian ]]; then
-    ps auxwwww | grep "/usr/bin/swatch -c /etc/swatch/conf/secure.conf -t/var/log/auth.log" | grep -v 'grep' >/dev/null ||
-     /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/secure.conf -t /var/log/auth.log
-     # --awk-field-syntaxは'\n'以外であれば何でもいい. ';'を終了文字として読み込まなければ。
+    ps auxwwww | grep "/usr/bin/swatch -c /etc/swatch/conf/secure.conf -t/var/log/auth.log" | grep -v 'grep' >/dev/null || \
+    sudo /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/secure.conf -t /var/log/auth.log
 elif [[ $DISTRIBUTION =~ centos ]]; then
-    ps auxwwww | grep "/usr/bin/swatch -c /etc/swatch/conf/secure.conf -t/var/log/auth.log" | grep -v 'grep' >/dev/null || /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/secure.conf -t /var/log/secure
+    ps auxwwww | grep "/usr/bin/swatch -c /etc/swatch/conf/secure.conf -t/var/log/secure.log" | grep -v 'grep' >/dev/null || \
+    sudo /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/secure.conf -t /var/log/secure
 else
     echo "Sorry, I can handle Ubuntu and CentOS only."
     exit 1
@@ -26,5 +26,5 @@ fi
 
 
 # watch for vsftpd
-ps auxwwww | grep "/usr/bin/swatch -c /etc/swatch/conf/swatch_for_ftpd.conf -t/var/log/vsftpd.log" | grep -v 'grep' >/dev/null ||
- /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/ftpd.conf -t/var/log/vsftpd.log
+ps auxwwww | grep "/usr/bin/swatch -c /etc/swatch/conf/ftpd.conf -t/var/log/vsftpd.log" | grep -v 'grep' >/dev/null || \
+sudo /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/ftpd.conf -t/var/log/vsftpd.log
