@@ -19,10 +19,13 @@ function install_swatch() {
 
     DISTRIBUTION=$(check_dist)
     if [[ $DISTRIBUTION =~ ubuntu || $DISTRIBUTION =~ debian ]]; then
-        sudo apt update && sudo apt upgrade \
+        yes | \
+        sudo apt update && \
+        sudo apt upgrade && \
 		sudo apt install swatch
     elif [[ $DISTRIBUTION =~ centos ]]; then
-        sudo yum update \
+        yes | \
+        sudo yum update && \
 		sudo yum install swatch
     else
         echo $(tput setaf 4)"Sorry, I can handle Ubuntu and CentOS only."$(tput sgr0)
