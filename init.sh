@@ -30,22 +30,22 @@ SWATCH_CONF_DIR=/etc/swatch/conf
 sudo sh -c "cat <<'EOF' >> $SWATCH_CONF_DIR/swatch_for_secure.conf
 	watchfor /Accepted/
 	        echo
-	        exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+	        exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
 
 	### ssh失敗検知
 	#watchfor /Invalid user/
 	#        echo
-	#        exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+	#        exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
 
 	### ssh失敗検知
 	#watchfor /Failed/
 	#        echo
-	#        exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+	#        exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
 
 	### sudo実行検知
 	watchfor /.*COMMAND.*/
 	         echo
-	         exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+	         exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
 	EOF
 	"
 }
@@ -57,7 +57,7 @@ function ftpd_conf() {
 	# ftp ログイン
 	watchfor /OK LOGIN/
 	         echo
-	         exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+	         exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
 	EOF
 	"
 }
@@ -104,7 +104,7 @@ function setting_ftp_log() {
 }
 
 function run_swatcher() {
-	bash etc/swatcher.sh
+	curl https://raw.githubusercontent.com/yousan/swatcher/master/etc/swatcher.sh | sudo bash -
 }
 
 # do
