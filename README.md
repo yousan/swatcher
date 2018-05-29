@@ -18,5 +18,5 @@ Above installation automatically run `swatcher`. If you run `swatcher` manually,
 curl https://raw.githubusercontent.com/yousan/swatcher/master/etc/swatcher.sh | sudo bash -
 ```
 
-# 日本語解説 (by [yousan](github.com/yousan))
+# 日本語解説 (by [yousan](https://github.com/yousan))
 https://qiita.com/yousan/items/e89603ba1c638be5f1c7
