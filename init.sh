@@ -11,14 +11,55 @@ function set_config() {
     SWATCH_CONF_DIR=/etc/swatch/conf
     [ ! -d $SWATCH_CONF_DIR ] && mkdir -p $SWATCH_CONF_DIR && cd $SWATCH_CONF_DIR
 
-	for f in etc/conf/*
-	do
-		conf_file=$(basename $f)
-	    curl "https://raw.githubusercontent.com/yousan/swatch/master/etc/$conf_file" > $SWATCH_CONF_DIR/$conf_file
-        chmod 0644 $SWATCH_CONF_DIR/$conf_file
-	done
+#	for f in etc/conf/*
+#	do
+#		conf_file=$(basename $f)
+#	    curl "https://raw.githubusercontent.com/yousan/swatch/master/etc/$conf_file" > $SWATCH_CONF_DIR/$conf_file
+#        chmod 0644 $SWATCH_CONF_DIR/$conf_file
+#	done
+
+	secure_conf
+	ftpd_conf
 
     echo $(tput setaf 2)"saved conf files into $SWATCH_CONF_DIR/"$(tput sgr0)
+}
+
+function secure_conf() {
+SWATCH_CONF_DIR=/etc/swatch/conf
+
+sudo sh -c "cat <<'EOF' >> $SWATCH_CONF_DIR/swatch_for_secure.conf
+	watchfor /Accepted/
+	        echo
+	        exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+
+	### ssh失敗検知
+	#watchfor /Invalid user/
+	#        echo
+	#        exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+
+	### ssh失敗検知
+	#watchfor /Failed/
+	#        echo
+	#        exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+
+	### sudo実行検知
+	watchfor /.*COMMAND.*/
+	         echo
+	         exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+	EOF
+	"
+}
+
+function ftpd_conf() {
+	SWATCH_CONF_DIR=/etc/swatch/conf
+
+	sudo sh -c "cat <<'EOF' >> $SWATCH_CONF_DIR/swatch_for_ftpd.conf
+	# ftp ログイン
+	watchfor /OK LOGIN/
+	         echo
+	         exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+	EOF
+	"
 }
 
 function set_script() {
@@ -38,7 +79,7 @@ function set_script() {
 function set_crontab() {
     SWATCH_CRON_UBUNTU_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/swatchron.ubuntu"
     SWATCH_CRON_CENTOS_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/swatchron.centos"
-    DISTRIBUTION=$(lsb_release -i)
+    DISTRIBUTION=$($(lsb_release -i) || cat /etc/system-release)
     if [[ $DISTRIBUTION =~ Ubuntu  ]]; then
         curl $SWATCH_CRON_UBUNTU_URL > /etc/cron.d/swatchron
     elif [[ $DISTRIBUTION =~ CentOS ]]; then
@@ -67,8 +108,9 @@ function run_swatcher() {
 }
 
 # do
+check_permittion
 set_config
-set_crontab
+#set_crontab
 set_script
 
 setting_ftp_log

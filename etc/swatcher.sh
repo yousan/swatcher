@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # watch for ssh
-DISTRIBUTION=$(lsb_release -i)
+DISTRIBUTION=$($(lsb_release -i) || cat /etc/system-release)
 if [[ $DISTRIBUTION =~ Ubuntu  ]]; then
     ps auxwwww | grep "/usr/bin/swatch -c /etc/swatch/conf/secure.conf -t/var/log/auth.log" | grep -v 'grep' >/dev/null ||
      /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/secure.conf -t /var/log/auth.log
@@ -15,5 +15,5 @@ fi
 
 
 # watch for vsftpd
-ps auxwwww | grep "/usr/bin/swatch -c /etc/swatch/conf/swatch_for_vsftpd.conf -t/var/log/vsftpd.log" | grep -v 'grep' >/dev/null ||
- /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/swatch_for_vsftpd.conf -t/var/log/vsftpd.log
+ps auxwwww | grep "/usr/bin/swatch -c /etc/swatch/conf/swatch_for_ftpd.conf -t/var/log/vsftpd.log" | grep -v 'grep' >/dev/null ||
+ /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/swatch_for_ftpd.conf -t/var/log/vsftpd.log
