@@ -13,6 +13,7 @@ You should change `<YOUR_INCOMING_WEBHOOK_URI>` in `/usr/local/bin/slack_notify.
 
 
 # Run Swatcher
+Above installation automatically run `swatcher`. If you run `swatcher` manually, you can use below command.
 ```bash
 curl https://raw.githubusercontent.com/yousan/swatcher/master/etc/swatcher.sh | sudo bash -
 ```
