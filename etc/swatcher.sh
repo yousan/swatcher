@@ -27,4 +27,4 @@ fi
 
 # watch for vsftpd
 ps auxwwww | grep "/usr/bin/swatch -c /etc/swatch/conf/swatch_for_ftpd.conf -t/var/log/vsftpd.log" | grep -v 'grep' >/dev/null ||
- /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/swatch_for_ftpd.conf -t/var/log/vsftpd.log
+ /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/ftpd.conf -t/var/log/vsftpd.log

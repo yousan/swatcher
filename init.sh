@@ -52,7 +52,7 @@ function set_config() {
 
 function secure_conf() {
 	SWATCH_CONF_DIR=/etc/swatch/conf
-	SWATCH_CONF_FILE=swatch_for_secure.conf
+	SWATCH_CONF_FILE=secure.conf
 	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 watchfor /Accepted/
         echo
@@ -78,8 +78,8 @@ EOT
 
 function ftpd_conf() {
 	SWATCH_CONF_DIR=/etc/swatch/conf
-	SWATCH_CONF_FILE=/etc/swatch/swatch_for_ftpd.conf
-	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/swatch_for_ftpd.conf
+	SWATCH_CONF_FILE=/etc/swatch/ftpd.conf
+	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 # ftp ログイン
 watchfor /OK LOGIN/
          echo
