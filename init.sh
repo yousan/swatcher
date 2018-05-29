@@ -84,7 +84,7 @@ function ftpd_conf() {
 watchfor /OK LOGIN/
          exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
 EOT
-	chmod 0644 $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
+	sudo chmod 0644 $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 }
 
 function set_script() {
@@ -92,7 +92,7 @@ function set_script() {
     ACTION_SCRIPT_DEST=/usr/local/bin
 
     curl $SLACK_NOTIFY_SCRIPT_URL | sudo tee $ACTION_SCRIPT_DEST/slack_notify.sh
-    chmod 0755 /usr/local/bin/slack_notify.sh
+    sudo chmod 0755 /usr/local/bin/slack_notify.sh
 
 	# Replace webhook key
     echo ${YOUR_INCOMING_WEBHOOK_URI:="<YOUR_INCOMING_WEBHOOK_URI>"}
@@ -114,7 +114,7 @@ function set_crontab() {
         echo $(tput setaf 4)"Sorry, I can handle Ubuntu and CentOS only."$(tput sgr0)
         exit 1
     fi
-    chmod 0644 /etc/cron.d/swatchron
+    sudo chmod 0644 /etc/cron.d/swatchron
 
     echo $(tput setaf 2)"saved into /etc/cron.d/swatchron"$(tput sgr0)
 
@@ -137,7 +137,7 @@ function run_swatcher() {
 check_permittion
 install_swatch
 set_config
-#set_crontab
+set_crontab
 set_script
 
 setting_ftp_log
