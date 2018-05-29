@@ -96,8 +96,8 @@ function set_script() {
     chmod 0755 /usr/local/bin/slack_notify.sh
 
 	# Replace webhook key
-    echo ${KEY:="<YOUR_INCOMING_WEBHOOK_URI>"}
-	sudo sed -i -e "s/<YOUR_INCOMING_WEBHOOK_URI>/$KEY/g" $ACTION_SCRIPT_DEST/slack_notify.sh
+    echo ${YOUR_INCOMING_WEBHOOK_URI:="<YOUR_INCOMING_WEBHOOK_URI>"}
+	sudo sed -i -e "s/<YOUR_INCOMING_WEBHOOK_URI>/$YOUR_INCOMING_WEBHOOK_URI/g" $ACTION_SCRIPT_DEST/slack_notify.sh
 
     echo $(tput setaf 2)"saved into /usr/bin/slack_notify.sh"$(tput sgr0)
 }
