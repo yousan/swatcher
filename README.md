@@ -2,7 +2,7 @@
 Replace `YOUR_INCOMING_WEBHOOK_URI`, then run it.
 ```bash
 curl https://raw.githubusercontent.com/yousan/swatch/master/init.sh | \
-sudo YOUR_INCOMING_WEBHOOK_URI=REPLACE_THIS bash - 
+sudo YOUR_INCOMING_WEBHOOK_URI=xxx bash - 
 ```
 
 # AND!! 
