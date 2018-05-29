@@ -1,7 +1,7 @@
 #!/bin/bash
 USERNAME="SERVER GATEKEEPER"
 CHANNEL="#bot"
-ICON=":ghost:"
+ICON=":eye:"
 TEXT=$*
 WEBHOOK_URL="<YOUR_INCOMING_WEBHOOK_URI>"
 
