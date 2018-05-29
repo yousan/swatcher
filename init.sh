@@ -7,11 +7,14 @@ function check_permittion() {
 	fi
 }
 
+### check_dist
+## Usage
+## dist=$(check_dist) && echo $dist // centos
 function check_dist() {
-	sudo cat /etc/redhat-release 2>/dev/null && echo "centos" || \
-	sudo cat /etc/lsb-release 2>/dev/null && echo "ubuntu" || \
-	sudo cat /etc/debian_version 2>/dev/null && echo "debian" || \
-	sudo cat /etc/fedra-release 2>/dev/null && echo "fedora" || \
+	sudo cat /etc/redhat-release    >/dev/null 2>&1 && echo "centos" && exit || \
+	sudo cat /etc/lsb-release       >/dev/null 2>&1 && echo "ubuntu" && exit || \
+	sudo cat /etc/debian_version    >/dev/null 2>&1 && echo "debian" && exit || \
+	sudo cat /etc/fedra-release     >/dev/null 2>&1 && echo "fedora" && exit || \
 	sudo echo "What the heck is this dist??"
 }
 
@@ -78,7 +81,7 @@ function set_script() {
     chmod 0755 /usr/local/bin/slack_notify.sh
 
 	# Replace webhook key
-    ${KEY:="<YOUR_INCOMING_WEBHOOK_URI>"}
+    echo ${KEY:="<YOUR_INCOMING_WEBHOOK_URI>"}
 	sudo sed -i -e "s/<YOUR_INCOMING_WEBHOOK_URI>/$KEY/g" $ACTION_SCRIPT_DEST/slack_notify.sh
 
     echo $(tput setaf 2)"saved into /usr/bin/slack_notify.sh"$(tput sgr0)
@@ -87,10 +90,10 @@ function set_script() {
 function set_crontab() {
     SWATCH_CRON_UBUNTU_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/swatchron.ubuntu"
     SWATCH_CRON_CENTOS_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/swatchron.centos"
-    DISTRIBUTION=check_dist
+    DISTRIBUTION=$(check_dist)
     # $($(lsb_release -i) || cat /etc/system-release)
 
-    if [[ $DISTRIBUTION =~ ubuntu  ]]; then
+    if [[ $DISTRIBUTION =~ ubuntu || $DISTRIBUTION =~ debian ]]; then
         curl $SWATCH_CRON_UBUNTU_URL > /etc/cron.d/swatchron
     elif [[ $DISTRIBUTION =~ centos ]]; then
         curl $SWATCH_CRON_CENTOS_URL > /etc/cron.d/swatchron
