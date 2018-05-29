@@ -7,15 +7,27 @@ function check_permittion() {
 	fi
 }
 
-### check_dist
-## Usage
-## dist=$(check_dist) && echo $dist // centos
 function check_dist() {
 	sudo cat /etc/redhat-release    >/dev/null 2>&1 && echo "centos" && exit || \
 	sudo cat /etc/lsb-release       >/dev/null 2>&1 && echo "ubuntu" && exit || \
 	sudo cat /etc/debian_version    >/dev/null 2>&1 && echo "debian" && exit || \
 	sudo cat /etc/fedra-release     >/dev/null 2>&1 && echo "fedora" && exit || \
 	sudo echo "What the heck is this dist??"
+}
+
+function install_swatch() {
+
+    DISTRIBUTION=$(check_dist)
+    if [[ $DISTRIBUTION =~ ubuntu || $DISTRIBUTION =~ debian ]]; then
+        sudo apt update && sudo apt upgrade \
+		sudo apt install swatch
+    elif [[ $DISTRIBUTION =~ centos ]]; then
+        sudo yum update \
+		sudo yum install swatch
+    else
+        echo $(tput setaf 4)"Sorry, I can handle Ubuntu and CentOS only."$(tput sgr0)
+        exit 1
+    fi
 }
 
 function set_config() {
@@ -37,7 +49,8 @@ function set_config() {
 
 function secure_conf() {
 	SWATCH_CONF_DIR=/etc/swatch/conf
-	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/swatch_for_secure.conf
+	SWATCH_CONF_FILE=swatch_for_secure.conf
+	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 watchfor /Accepted/
         echo
         exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
@@ -57,16 +70,19 @@ watchfor /.*COMMAND.*/
          echo
          exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
 EOT
+	chmod 0644 $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 }
 
 function ftpd_conf() {
 	SWATCH_CONF_DIR=/etc/swatch/conf
+	SWATCH_CONF_FILE=/etc/swatch/swatch_for_ftpd.conf
 	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/swatch_for_ftpd.conf
 # ftp ログイン
 watchfor /OK LOGIN/
          echo
          exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
 EOT
+	chmod 0644 $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 }
 
 function set_script() {
@@ -86,9 +102,8 @@ function set_script() {
 function set_crontab() {
     SWATCH_CRON_UBUNTU_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/swatchron.ubuntu"
     SWATCH_CRON_CENTOS_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/swatchron.centos"
-    DISTRIBUTION=$(check_dist)
-    # $($(lsb_release -i) || cat /etc/system-release)
 
+    DISTRIBUTION=$(check_dist)
     if [[ $DISTRIBUTION =~ ubuntu || $DISTRIBUTION =~ debian ]]; then
         curl $SWATCH_CRON_UBUNTU_URL > /etc/cron.d/swatchron
     elif [[ $DISTRIBUTION =~ centos ]]; then
@@ -118,6 +133,7 @@ function run_swatcher() {
 
 # do
 check_permittion
+install_swatch
 set_config
 #set_crontab
 set_script
