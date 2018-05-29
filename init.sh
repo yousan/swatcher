@@ -59,22 +59,18 @@ function secure_conf() {
 	SWATCH_CONF_FILE=secure.conf
 	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 watchfor /Accepted/
-        echo
         exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
 
 ### ssh失敗検知
 #watchfor /Invalid user/
-#        echo
 #        exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
 
 ### ssh失敗検知
 #watchfor /Failed/
-#        echo
 #        exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
 
 ### sudo実行検知
 watchfor /.*COMMAND.*/
-         echo
          exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
 EOT
 	chmod 0644 $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
@@ -86,7 +82,6 @@ function ftpd_conf() {
 	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 # ftp ログイン
 watchfor /OK LOGIN/
-         echo
          exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
 EOT
 	chmod 0644 $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
