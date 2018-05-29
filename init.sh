@@ -101,7 +101,7 @@ function set_script() {
 
 	# Replace webhook key
     echo ${YOUR_INCOMING_WEBHOOK_URI:="<YOUR_INCOMING_WEBHOOK_URI>"}
-	sudo sed -i -e "s/<YOUR_INCOMING_WEBHOOK_URI>/$YOUR_INCOMING_WEBHOOK_URI/g" $ACTION_SCRIPT_DEST/slack_notify.sh
+	sudo sed -i -e "s@<YOUR_INCOMING_WEBHOOK_URI>@$YOUR_INCOMING_WEBHOOK_URI@g" $ACTION_SCRIPT_DEST/slack_notify.sh
 
     echo $(tput setaf 2)"saved into /usr/bin/slack_notify.sh"$(tput sgr0)
 }
@@ -151,5 +151,5 @@ run_swatcher
 
 
 echo $(tput setaf 2)"Complete configuration for 'swatcher'"$(tput sgr0)
-echo $(tput setaf 3)"You should change INCOMING_WEBHOOK_URI in /usr/bin/slack_notify.sh"$(tput sgr0)
+echo $(tput setaf 3)"But,  you should change '<YOUR_INCOMING_WEBHOOK_URI>' in '/usr/bin/slack_notify.sh' if you didn't set 'YOUR_INCOMING_WEBHOOK_URI' when installing."$(tput sgr0)
 
