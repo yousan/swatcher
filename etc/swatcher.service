@@ -1,0 +1,13 @@
+Unit]
+Description=swatcher daemon
+
+[Service]
+Type=forking
+PIDFile=/var/run/swatcher/swatcher.pid
+ExecStart=/usr/local/bin/swatcher.sh
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -HUP $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
