@@ -36,41 +36,37 @@ function set_config() {
 }
 
 function secure_conf() {
-SWATCH_CONF_DIR=/etc/swatch/conf
+	SWATCH_CONF_DIR=/etc/swatch/conf
+	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/swatch_for_secure.conf
+watchfor /Accepted/
+        echo
+        exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
 
-sudo sh -c "cat <<'EOF' >> $SWATCH_CONF_DIR/swatch_for_secure.conf
-	watchfor /Accepted/
-	        echo
-	        exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
+### ssh失敗検知
+#watchfor /Invalid user/
+#        echo
+#        exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
 
-	### ssh失敗検知
-	#watchfor /Invalid user/
-	#        echo
-	#        exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
+### ssh失敗検知
+#watchfor /Failed/
+#        echo
+#        exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
 
-	### ssh失敗検知
-	#watchfor /Failed/
-	#        echo
-	#        exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
-
-	### sudo実行検知
-	watchfor /.*COMMAND.*/
-	         echo
-	         exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
-	EOF
-	"
+### sudo実行検知
+watchfor /.*COMMAND.*/
+         echo
+         exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
+EOT
 }
 
 function ftpd_conf() {
 	SWATCH_CONF_DIR=/etc/swatch/conf
-
-	sudo sh -c "cat <<'EOF' >> $SWATCH_CONF_DIR/swatch_for_ftpd.conf
-	# ftp ログイン
-	watchfor /OK LOGIN/
-	         echo
-	         exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
-	EOF
-	"
+	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/swatch_for_ftpd.conf
+# ftp ログイン
+watchfor /OK LOGIN/
+         echo
+         exec \"/usr/local/bin/slack_notify.sh $* > /dev/null 2>&1\"
+EOT
 }
 
 function set_script() {
