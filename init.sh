@@ -7,6 +7,14 @@ function check_permittion() {
 	fi
 }
 
+function check_dist() {
+	sudo cat /etc/redhat-release 2>/dev/null && echo "centos" || \
+	sudo cat /etc/lsb-release 2>/dev/null && echo "ubuntu" || \
+	sudo cat /etc/debian_version 2>/dev/null && echo "debian" || \
+	sudo cat /etc/fedra-release 2>/dev/null && echo "fedora" || \
+	sudo echo "What the heck is this dist??"
+}
+
 function set_config() {
     SWATCH_CONF_DIR=/etc/swatch/conf
     [ ! -d $SWATCH_CONF_DIR ] && mkdir -p $SWATCH_CONF_DIR && cd $SWATCH_CONF_DIR
@@ -79,10 +87,12 @@ function set_script() {
 function set_crontab() {
     SWATCH_CRON_UBUNTU_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/swatchron.ubuntu"
     SWATCH_CRON_CENTOS_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/swatchron.centos"
-    DISTRIBUTION=$($(lsb_release -i) || cat /etc/system-release)
-    if [[ $DISTRIBUTION =~ Ubuntu  ]]; then
+    DISTRIBUTION=check_dist
+    # $($(lsb_release -i) || cat /etc/system-release)
+
+    if [[ $DISTRIBUTION =~ ubuntu  ]]; then
         curl $SWATCH_CRON_UBUNTU_URL > /etc/cron.d/swatchron
-    elif [[ $DISTRIBUTION =~ CentOS ]]; then
+    elif [[ $DISTRIBUTION =~ centos ]]; then
         curl $SWATCH_CRON_CENTOS_URL > /etc/cron.d/swatchron
     else
         echo $(tput setaf 4)"Sorry, I can handle Ubuntu and CentOS only."$(tput sgr0)
