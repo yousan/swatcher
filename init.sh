@@ -16,6 +16,10 @@ function check_dist() {
 }
 
 function install_swatch() {
+	# インストール済みであればスキップ
+	if (type "swatch" > /dev/null 2>&1); then
+	    return
+	fi
 
     DISTRIBUTION=$(check_dist)
     if [[ $DISTRIBUTION =~ ubuntu || $DISTRIBUTION =~ debian ]]; then

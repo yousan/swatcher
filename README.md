@@ -1,6 +1,7 @@
 # Install
 ```bash
-curl https://raw.githubusercontent.com/yousan/swatch/master/init.sh | sudo YOUR_INCOMING_WEBHOOK_URI=<REPLACE_THIS>; bash - 
+curl https://raw.githubusercontent.com/yousan/swatch/master/init.sh | \
+sudo YOUR_INCOMING_WEBHOOK_URI=<REPLACE_THIS>; bash - 
 ```
 
 # AND!! 
