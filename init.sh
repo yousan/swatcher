@@ -82,7 +82,7 @@ EOT
 
 function ftpd_conf() {
 	SWATCH_CONF_DIR=/etc/swatch/conf
-	SWATCH_CONF_FILE=/etc/swatch/ftpd.conf
+	SWATCH_CONF_FILE=ftpd.conf
 	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 # ftp ログイン
 watchfor /OK LOGIN/
