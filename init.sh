@@ -130,6 +130,8 @@ function setting_ftp_log() {
 
 	sudo sed -i -e "s@[#]*xferlog_file=/var/log/xferlog@xferlog_file=xferlog_file=/var/log/vsftpd.log@g" /etc/vsftpd.conf 2>/dev/null || \
 	sudo sed -i -e "s@[#]*xferlog_file=/var/log/xferlog@xferlog_file=/var/log/vsftpd.log@g" /etc/vsftpd/vsftpd.conf
+
+	sudo systemctl restart vsftpd.service
 }
 
 function run_swatcher() {
