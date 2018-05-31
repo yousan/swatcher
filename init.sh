@@ -96,6 +96,9 @@ function set_script() {
 
 	# Replace webhook key
     echo ${YOUR_INCOMING_WEBHOOK_URI:="<YOUR_INCOMING_WEBHOOK_URI>"}
+    if [ $YOUR_INCOMING_WEBHOOK_URI = "<YOUR_INCOMING_WEBHOOK_URI>" ]; then
+        echo $(tput setaf 3)"[WARNING] You should change '<YOUR_INCOMING_WEBHOOK_URI>' in '/usr/bin/slack_notify.sh' if you didn't set 'YOUR_INCOMING_WEBHOOK_URI' when installing."$(tput sgr0)
+    fi
 	sudo sed -i -e "s@<YOUR_INCOMING_WEBHOOK_URI>@$YOUR_INCOMING_WEBHOOK_URI@g" $ACTION_SCRIPT_DEST/slack_notify.sh
 
     echo $(tput setaf 2)"saved into /usr/bin/slack_notify.sh"$(tput sgr0)
@@ -122,11 +125,11 @@ function set_crontab() {
 
 function setting_ftp_log() {
 	# デフォルト`/etc/vsftpd.conf`にない場合は`/etc/vsftpd/vsftpd.conf`を探す
-	sudo sed -i -e "s/^xferlog_std_format=/#xferlog_std_format=/g" /etc/vsftpd.conf || \
-	sudo sed -i -e "s/^xferlog_std_format=/#xferlog_std_format=/g" /etc/vsftpd/vsftpd.conf
+	sudo sed -i -e "s/xferlog_std_format=YES/xferlog_std_format=NO/g" /etc/vsftpd.conf 2>/dev/null || \
+	sudo sed -i -e "s/xferlog_std_format=YES/xferlog_std_format=NO/g" /etc/vsftpd/vsftpd.conf
 
-	sudo sed -i -e "s/^xferlog_file=/#xferlog_file=/g" /etc/vsftpd.conf || \
-	sudo sed -i -e "s/^xferlog_file=/#xferlog_file=/g" /etc/vsftpd/vsftpd.conf
+	sudo sed -i -e "s@xferlog_file=/var/log/xferlog@xferlog_file=xferlog_file=/var/log/vsftpd.log@g" /etc/vsftpd.conf 2>/dev/null || \
+	sudo sed -i -e "s@xferlog_file=/var/log/xferlog@xferlog_file=/var/log/vsftpd.log@g" /etc/vsftpd/vsftpd.conf
 }
 
 function run_swatcher() {
@@ -146,5 +149,4 @@ run_swatcher
 
 
 echo $(tput setaf 2)"Complete configuration for 'swatcher'"$(tput sgr0)
-echo $(tput setaf 3)"But,  you should change '<YOUR_INCOMING_WEBHOOK_URI>' in '/usr/bin/slack_notify.sh' if you didn't set 'YOUR_INCOMING_WEBHOOK_URI' when installing."$(tput sgr0)
 
