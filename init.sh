@@ -59,19 +59,19 @@ function secure_conf() {
 	SWATCH_CONF_FILE=secure.conf
 	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 watchfor /Accepted/
-        exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+        exec "\/usr\/local\/bin\/slack_notify $* > /dev/null 2>&1"
 
 ### ssh失敗検知
 #watchfor /Invalid user/
-#        exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+#        exec "\/usr\/local\/bin\/slack_notify $* > /dev/null 2>&1"
 
 ### ssh失敗検知
 #watchfor /Failed/
-#        exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+#        exec "\/usr\/local\/bin\/slack_notify $* > /dev/null 2>&1"
 
 ### sudo実行検知
 watchfor /.*COMMAND.*/
-         exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+         exec "\/usr\/local\/bin\/slack_notify $* > /dev/null 2>&1"
 EOT
 	chmod 0644 $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 }
@@ -82,7 +82,7 @@ function ftpd_conf() {
 	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 # ftp ログイン
 watchfor /OK LOGIN/
-         exec "\/usr\/local\/bin\/slack_notify.sh $* > /dev/null 2>&1"
+         exec "\/usr\/local\/bin\/slack_notify $* > /dev/null 2>&1"
 EOT
 	sudo chmod 0644 $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 }
@@ -91,17 +91,17 @@ function set_script() {
     SLACK_NOTIFY_SCRIPT_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/slack_notify.sh"
     ACTION_SCRIPT_DEST=/usr/local/bin
 
-    curl $SLACK_NOTIFY_SCRIPT_URL | sudo tee $ACTION_SCRIPT_DEST/slack_notify.sh
-    sudo chmod 0755 /usr/local/bin/slack_notify.sh
+    curl $SLACK_NOTIFY_SCRIPT_URL | sudo tee $ACTION_SCRIPT_DEST/slack_notify
+    sudo chmod 0755 /usr/local/bin/slack_notify
 
 	# Replace webhook key
     echo ${YOUR_INCOMING_WEBHOOK_URI:="<YOUR_INCOMING_WEBHOOK_URI>"}
     if [ $YOUR_INCOMING_WEBHOOK_URI = "<YOUR_INCOMING_WEBHOOK_URI>" ]; then
-        echo $(tput setaf 3)"[WARNING] You should change '<YOUR_INCOMING_WEBHOOK_URI>' in '/usr/bin/slack_notify.sh' if you didn't set 'YOUR_INCOMING_WEBHOOK_URI' when installing."$(tput sgr0)
+        echo $(tput setaf 3)"[WARNING] You should change '<YOUR_INCOMING_WEBHOOK_URI>' in '/usr/bin/slack_notify' if you didn't set 'YOUR_INCOMING_WEBHOOK_URI' when installing."$(tput sgr0)
     fi
-	sudo sed -i -e "s@<YOUR_INCOMING_WEBHOOK_URI>@$YOUR_INCOMING_WEBHOOK_URI@g" $ACTION_SCRIPT_DEST/slack_notify.sh
+	sudo sed -i -e "s@<YOUR_INCOMING_WEBHOOK_URI>@$YOUR_INCOMING_WEBHOOK_URI@g" $ACTION_SCRIPT_DEST/slack_notify
 
-    echo $(tput setaf 2)"saved into /usr/bin/slack_notify.sh"$(tput sgr0)
+    echo $(tput setaf 2)"saved into /usr/bin/slack_notify"$(tput sgr0)
 }
 
 function set_crontab() {
