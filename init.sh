@@ -124,7 +124,7 @@ function set_crontab() {
 }
 
 function setting_ftp_log() {
-	if [ "$(systemctl is-active --quiet vsftpd)" != 0 ]; then
+	if [ "$(systemctl is-active --quiet vsftpd && echo 0)" != 0 ]; then
 		echo $(tput setaf 1)"[ERROR] 'vsftpd' doesn't active. or systemctl isn't exist. "$(tput sgr0)
 		return
 	fi
