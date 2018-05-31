@@ -125,11 +125,11 @@ function set_crontab() {
 
 function setting_ftp_log() {
 	# デフォルト`/etc/vsftpd.conf`にない場合は`/etc/vsftpd/vsftpd.conf`を探す
-	sudo sed -i -e "s/xferlog_std_format=YES/xferlog_std_format=NO/g" /etc/vsftpd.conf 2>/dev/null || \
-	sudo sed -i -e "s/xferlog_std_format=YES/xferlog_std_format=NO/g" /etc/vsftpd/vsftpd.conf
+	sudo sed -i -e "s/[#]*xferlog_std_format=YES/xferlog_std_format=NO/g" /etc/vsftpd.conf 2>/dev/null || \
+	sudo sed -i -e "s/[#]*xferlog_std_format=YES/xferlog_std_format=NO/g" /etc/vsftpd/vsftpd.conf
 
-	sudo sed -i -e "s@xferlog_file=/var/log/xferlog@xferlog_file=xferlog_file=/var/log/vsftpd.log@g" /etc/vsftpd.conf 2>/dev/null || \
-	sudo sed -i -e "s@xferlog_file=/var/log/xferlog@xferlog_file=/var/log/vsftpd.log@g" /etc/vsftpd/vsftpd.conf
+	sudo sed -i -e "s@[#]*xferlog_file=/var/log/xferlog@xferlog_file=xferlog_file=/var/log/vsftpd.log@g" /etc/vsftpd.conf 2>/dev/null || \
+	sudo sed -i -e "s@[#]*xferlog_file=/var/log/xferlog@xferlog_file=/var/log/vsftpd.log@g" /etc/vsftpd/vsftpd.conf
 }
 
 function run_swatcher() {
