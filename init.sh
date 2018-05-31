@@ -2,7 +2,7 @@
 function check_permittion() {
 	sudo echo $(tput setaf 2)"Starting configuration for 'swatcher'"$(tput sgr0)
 	if [ $? != 0 ]; then
-        echo $(tput setaf 4)"Permittion Denied"$(tput sgr0)
+        echo $(tput setaf 1)"Permittion Denied"$(tput sgr0)
 		exit 1
 	fi
 }
@@ -32,7 +32,7 @@ function install_swatch() {
         sudo yum update && \
 		sudo yum install swatch
     else
-        echo $(tput setaf 4)"Sorry, I can handle Ubuntu and CentOS only."$(tput sgr0)
+        echo $(tput setaf 1)"Sorry, I can handle Ubuntu and CentOS only."$(tput sgr0)
         exit 1
     fi
 }
@@ -114,7 +114,7 @@ function set_crontab() {
     elif [[ $DISTRIBUTION =~ centos ]]; then
         curl $SWATCH_CRON_CENTOS_URL > /etc/cron.d/swatchron
     else
-        echo $(tput setaf 4)"Sorry, I can handle Ubuntu and CentOS only."$(tput sgr0)
+        echo $(tput setaf 1)"Sorry, I can handle Ubuntu and CentOS only."$(tput sgr0)
         exit 1
     fi
     sudo chmod 0644 /etc/cron.d/swatchron
@@ -124,6 +124,11 @@ function set_crontab() {
 }
 
 function setting_ftp_log() {
+	if [ $(systemctl is-active --quiet vsftpd) != 0 ]; then
+		echo $(tput setaf 1)"[ERROR] 'vsftpd' doesn't active. or systemctl isn't exist. "$(tput sgr0)
+		return
+	fi
+
 	# デフォルト`/etc/vsftpd.conf`にない場合は`/etc/vsftpd/vsftpd.conf`を探す
 	sudo sed -i -e "s/[#]*xferlog_std_format=YES/xferlog_std_format=NO/g" /etc/vsftpd.conf 2>/dev/null || \
 	sudo sed -i -e "s/[#]*xferlog_std_format=YES/xferlog_std_format=NO/g" /etc/vsftpd/vsftpd.conf
