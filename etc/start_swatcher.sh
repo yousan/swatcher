@@ -26,10 +26,10 @@ start() {
     if [ $? -ne 0 ]; then
         echo -n "Starting swatch"
         pno=0
-        for conf in /etc/swatch/*.conf
+        for conf in /etc/swatch/conf/*.conf
         do
 			pname=$(echo basename $conf) | sed -e 's/.sh//g'
-            if [[ $conf =~ /etc/swatch/secure.conf ]]; then
+            if [[ $conf =~ /etc/swatch/conf/secure.conf ]]; then
 	            if [[ $DISTRIBUTION =~ ubuntu || $DISTRIBUTION =~ debian ]]; then
 	                WATCHLOG=/var/log/auth.log
 				elif [[ $DISTRIBUTION =~ centos ]]; then
