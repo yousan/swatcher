@@ -27,7 +27,7 @@ start() {
         echo -n "Starting swatch"
         for conf in /etc/swatch/conf/*.conf
         do
-			pname=$($(echo basename $conf) | sed -e 's/.sh//g')
+			pname=$($(echo basename $conf) | sed -e 's/.conf//g')
 			echo "$pname running"
             if [[ $conf =~ /etc/swatch/conf/secure.conf ]]; then
 	            if [[ $DISTRIBUTION =~ ubuntu || $DISTRIBUTION =~ debian ]]; then
