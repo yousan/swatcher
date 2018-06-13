@@ -24,9 +24,10 @@ stop() {
     # Stop daemons.
     ls /var/run/swatch_*.pid > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        echo -n "Stopping swatch..."
         for pid in /var/run/swatcher_*.pid
         do
+	       pname=$($(echo basename $pid) | sed -e 's/.pid//g' | sed -e 's/swatcher_//g')
+           echo -n "Stopping swatcher for $pname ..."
            kill $(cat $pid)
            rm -f $pid
         done
