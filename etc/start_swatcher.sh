@@ -25,10 +25,10 @@ start() {
 	/var/run/swatch_*.pid > /dev/null 2>&1
     if [ $? -ne 0 ]; then
         echo -n "Starting swatch"
-        pno=0
         for conf in /etc/swatch/conf/*.conf
         do
-			pname=$(echo basename $conf) | sed -e 's/.sh//g'
+			pname=$($(echo basename $conf) | sed -e 's/.sh//g')
+			echo "$pname running"
             if [[ $conf =~ /etc/swatch/conf/secure.conf ]]; then
 	            if [[ $DISTRIBUTION =~ ubuntu || $DISTRIBUTION =~ debian ]]; then
 	                WATCHLOG=/var/log/auth.log
@@ -43,7 +43,7 @@ start() {
             fi
             swatch --config-file $conf --tail-file $WATCHLOG \
             --script-dir=/tmp --awk-field-syntax --use-cpan-file-tail --daemon \
-            --pid-file /var/run/swatch_$pname.pid \
+            --pid-file /var/run/swatcher_$pname.pid \
             >> /var/log/swatch/swatch.log 2>&1
             RETVAL=$?
             [ $RETVAL != 0 ] && return $RETVAL

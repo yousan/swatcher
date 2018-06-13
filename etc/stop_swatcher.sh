@@ -25,7 +25,7 @@ stop() {
     ls /var/run/swatch_*.pid > /dev/null 2>&1
     if [ $? -eq 0 ]; then
         echo -n "Stopping swatch..."
-        for pid in /var/run/swatch_*.pid
+        for pid in /var/run/swatcher_*.pid
         do
            kill $(cat $pid)
            rm -f $pid
