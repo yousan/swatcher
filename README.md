@@ -20,3 +20,6 @@ curl https://raw.githubusercontent.com/yousan/swatcher/master/etc/swatcher.sh | 
 
 # Japanese Explanation (by [yousan](https://github.com/yousan))
 https://qiita.com/yousan/items/e89603ba1c638be5f1c7
+
+# Future Wroks
+- Configure tool so that can change settings not only when initialization
