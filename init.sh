@@ -137,6 +137,7 @@ function setting_ftp_log() {
 	sudo sed -i -e "s@[#]*xferlog_file=/var/log/xferlog@xferlog_file=/var/log/vsftpd.log@g" /etc/vsftpd/vsftpd.conf
 
 	sudo touch /var/log/vsftpd.log
+
 	sudo systemctl restart vsftpd.service
 }
 
