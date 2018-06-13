@@ -24,11 +24,11 @@ start() {
     DISTRIBUTION=$(check_dist)
 	/var/run/swatch_*.pid > /dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -n "Starting swatch"
+#        echo -n "Starting swatch"
         for conf in /etc/swatch/conf/*.conf
         do
 			pname=$($(echo basename $conf) | sed -e 's/.conf//g')
-			echo "$pname running"
+			echo "Starting swatcher for $pname ..."
             if [[ $conf =~ /etc/swatch/conf/secure.conf ]]; then
 	            if [[ $DISTRIBUTION =~ ubuntu || $DISTRIBUTION =~ debian ]]; then
 	                WATCHLOG=/var/log/auth.log

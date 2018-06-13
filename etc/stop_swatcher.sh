@@ -22,7 +22,7 @@ check_dist() {
 
 stop() {
     # Stop daemons.
-    ls /var/run/swatch_*.pid > /dev/null 2>&1
+    ls /var/run/swatcher_*.pid > /dev/null 2>&1
     if [ $? -eq 0 ]; then
         for pid in /var/run/swatcher_*.pid
         do
