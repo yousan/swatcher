@@ -14,7 +14,7 @@ You should change `<YOUR_INCOMING_WEBHOOK_URL>` in `/usr/local/bin/slack_notify.
 
 ### Check if `swatcher` is loaded successfully 
 The `swatcher` uses `systemd`. You can sure that systemd loaded `swatcher` successfully as a unit, using `sudo systemctl status swatcher` command. If it's status is `loaded`, it success loading `swatcher.service`.
-![Successfully loaded](https://gyazo.com/53431b308ce1a595c4c9e9eb814a4e9a)
+![Successfully loaded](https://raw.githubusercontent.com/yousan/swatcher/master/assets/successfully_loaded.png?raw=true)
 
 
 # Run Swatcher 
