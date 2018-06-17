@@ -89,7 +89,7 @@ EOT
 	sudo chmod 0644 $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
 }
 
-function set_script() {
+function set_notify_script() {
     SLACK_NOTIFY_SCRIPT_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/slack_notify.sh"
     ACTION_SCRIPT_DEST=/usr/local/bin
 
@@ -127,6 +127,11 @@ function set_crontab() {
 }
 
 function set_systemd() {
+	# set start/stop script before,
+	set_start_script
+	set_stop_script
+
+
 	SYSTEMD_DIR=/etc/systemd/system
 	SWATCHER_UNIT=swatcher.service
 	cat <<'EOT' | sudo tee $SYSTEMD_DIR/$SWATCHER_UNIT
@@ -145,13 +150,30 @@ Restart=always
 WantedBy=multi-user.target
 EOT
 	chmod 0755 $SYSTEMD_DIR/$SWATCHER_UNIT
-
 	sudo systemctl daemon-reload
 
 	echo $(tput setaf 2)"Complete configuration for swatcher.service on systemd"$(tput sgr0)
 	echo $(tput setaf 2)"You can check it loaded successfully using 'sudo systemctl status swatcher'"$(tput sgr0)
 }
 
+function set_start_script() {
+    SCRIPT_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/start_swatcher.sh"
+    ACTION_SCRIPT_DEST=/etc/init.d
+
+    curl $SCRIPT_URL | sudo tee $ACTION_SCRIPT_DEST/start_swatcher.sh
+    sudo chmod 0755 $ACTION_SCRIPT_DEST/start_swatcher.sh
+
+    echo $(tput setaf 2)"saved into $ACTION_SCRIPT_DEST/start_swatcher.sh "$(tput sgr0)
+}
+function set_stop_script() {
+    SCRIPT_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/stop_swatcher.sh"
+    ACTION_SCRIPT_DEST=/etc/init.d
+
+    curl $SCRIPT_URL | sudo tee $ACTION_SCRIPT_DEST/stop_swatcher.sh
+    sudo chmod 0755 $ACTION_SCRIPT_DEST/start_swatcher.sh
+
+    echo $(tput setaf 2)"saved into $ACTION_SCRIPT_DEST/stop_swatcher.sh"$(tput sgr0)
+}
 
 function setting_ftp_log() {
 	if [ "$(systemctl is-active --quiet vsftpd && echo 0)" != 0 ]; then
@@ -181,7 +203,7 @@ function run_swatcher() {
 check_permittion
 install_swatch
 set_config
-set_script
+set_notify_script
 setting_ftp_log
 set_systemd
 
