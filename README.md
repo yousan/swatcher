@@ -2,14 +2,14 @@
 `Swatcher` is a log watching tool that send important and specified logs to `slack INCOMING WEBHOOK` using [swatch](http://www.linux-mag.com/id/7807/). It corresponds now to `ssh` log and` ftp` log.
 
 # Install
-Replace `YOUR_INCOMING_WEBHOOK_URI`, then run it.
+Replace `YOUR_INCOMING_WEBHOOK_URL`, then run it.
 ```bash
 curl https://raw.githubusercontent.com/yousan/swatch/master/init.sh | \
-sudo YOUR_INCOMING_WEBHOOK_URI=xxx bash - 
+sudo YOUR_INCOMING_WEBHOOK_URL=xxx bash - 
 ```
 
 ### and!!
-You should change `<YOUR_INCOMING_WEBHOOK_URI>` in `/usr/local/bin/slack_notify.sh` if you didn't set `YOUR_INCOMING_WEBHOOK_URI` when installing.
+You should change `<YOUR_INCOMING_WEBHOOK_URL>` in `/usr/local/bin/slack_notify.sh` if you didn't set `YOUR_INCOMING_WEBHOOK_URL` when installing.
 
 
 # Run Swatcher
