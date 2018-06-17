@@ -13,10 +13,23 @@ You should change `<YOUR_INCOMING_WEBHOOK_URI>` in `/usr/local/bin/slack_notify.
 
 
 # Run Swatcher
-Above installation automatically run `swatcher`. If you run `swatcher` manually, you can use below command.
+`swatcher` uses `systemd`. You can sure that systemd loaded `swatcher` successfully as a systemd unit using `sudo systemctl status swatcher` command. After you can check that, run below command.
 ```bash
-curl https://raw.githubusercontent.com/yousan/swatcher/master/etc/swatcher.sh | sudo bash -
+sudo systemctl start swatcher
 ```
+
+# Stop Swatcher
+And you can stop to type a below command.
+```bash
+sudo systemctl stop swatcher
+```
+
+# Restart Swatcher
+And also do restart.
+```bash
+sudo systemctl restart swatcher
+```
+
 
 # Japanese Explanation (by [yousan](https://github.com/yousan))
 https://qiita.com/yousan/items/e89603ba1c638be5f1c7
