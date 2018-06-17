@@ -27,24 +27,24 @@ start() {
 #        echo -n "Starting swatch"
         for conf in /etc/swatch/conf/*.conf
         do
-			pname=$($(echo basename $conf) | sed -e 's/.conf//g')
-			echo "Starting swatcher for $pname ..."
+	    pname=$($(echo basename $conf) | sed -e 's/.conf//g')
+	    echo "Starting swatcher for $pname ..."
             if [[ $conf =~ /etc/swatch/conf/secure.conf ]]; then
 	            if [[ $DISTRIBUTION =~ ubuntu || $DISTRIBUTION =~ debian ]]; then
 	                WATCHLOG=/var/log/auth.log
 				elif [[ $DISTRIBUTION =~ centos ]]; then
 	                WATCHLOG=/var/log/secure
-				else
-		            echo "Sorry, It can handle Ubuntu, Debian and CentOS only."
-		            exit 1
-				fi
-			else
+			    else
+			        echo "Sorry, It can handle Ubuntu, Debian and CentOS only."
+			        exit 1
+			    fi
+		    else
                 WATCHLOG=`grep "^# logfile" $conf | awk '{ print $3 }'`
             fi
             swatch --config-file $conf --tail-file $WATCHLOG \
-            --script-dir=/tmp --awk-field-syntax --use-cpan-file-tail --daemon \
-            --pid-file /var/run/swatcher_$pname.pid \
-            >> /var/log/swatch/swatch.log 2>&1
+            --script-dir=/tmp --awk-field-syntax ';' --daemon \
+            --pid-file /var/run/swatcher_$pname.pid
+#            >> /var/log/swatch/swatch.log 2>&1
             RETVAL=$?
             [ $RETVAL != 0 ] && return $RETVAL
         done
@@ -57,5 +57,5 @@ start() {
 }
 
 start
-exit 0;
-#exit $RETVAL
+#exit 0;
+exit $RETVAL

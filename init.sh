@@ -80,6 +80,8 @@ function ftpd_conf() {
 	SWATCH_CONF_DIR=/etc/swatch/conf
 	SWATCH_CONF_FILE=ftpd.conf
 	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
+# logfile /var/log/vsftpd.log
+
 # ftp ログイン
 watchfor /OK LOGIN/
          exec "\/usr\/local\/bin\/slack_notify $* > /dev/null 2>&1"
@@ -95,15 +97,16 @@ function set_script() {
     sudo chmod 0755 /usr/local/bin/slack_notify
 
 	# Replace webhook key
-    echo ${YOUR_INCOMING_WEBHOOK_URI:="<YOUR_INCOMING_WEBHOOK_URI>"}
-    if [ $YOUR_INCOMING_WEBHOOK_URI = "<YOUR_INCOMING_WEBHOOK_URI>" ]; then
-        echo $(tput setaf 3)"[WARNING] You should change '<YOUR_INCOMING_WEBHOOK_URI>' in '/usr/bin/slack_notify' if you didn't set 'YOUR_INCOMING_WEBHOOK_URI' when installing."$(tput sgr0)
+    echo ${YOUR_INCOMING_WEBHOOK_URL:="<YOUR_INCOMING_WEBHOOK_URL>"}
+    if [ $YOUR_INCOMING_WEBHOOK_URL = "<YOUR_INCOMING_WEBHOOK_URL>" ]; then
+        echo $(tput setaf 3)"[WARNING] You should change '<YOUR_INCOMING_WEBHOOK_URL>' in '/usr/bin/slack_notify' if you didn't set 'YOUR_INCOMING_WEBHOOK_URL' when installing."$(tput sgr0)
     fi
-	sudo sed -i -e "s@<YOUR_INCOMING_WEBHOOK_URI>@$YOUR_INCOMING_WEBHOOK_URI@g" $ACTION_SCRIPT_DEST/slack_notify
+	sudo sed -i -e "s@<YOUR_INCOMING_WEBHOOK_URL>@$YOUR_INCOMING_WEBHOOK_URL@g" $ACTION_SCRIPT_DEST/slack_notify
 
     echo $(tput setaf 2)"saved into /usr/bin/slack_notify"$(tput sgr0)
 }
 
+# deprecated
 function set_crontab() {
     SWATCH_CRON_UBUNTU_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/swatchron.ubuntu"
     SWATCH_CRON_CENTOS_URL="https://raw.githubusercontent.com/yousan/swatch/master/etc/swatchron.centos"
@@ -123,6 +126,33 @@ function set_crontab() {
 
 }
 
+function set_systemd() {
+	SYSTEMD_DIR=/etc/systemd/system
+	SWATCHER_UNIT=swatcher.service
+	cat <<'EOT' | sudo tee $SYSTEMD_DIR/$SWATCHER_UNIT
+[Unit]
+Description=swatch daemon
+After=syslog.target network.target
+
+[Service]
+Type=forking
+ExecStart=/etc/init.d/start_swatcher.sh
+;ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/etc/init.d/stop_swatcher.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOT
+	chmod 0755 $SYSTEMD_DIR/$SWATCHER_UNIT
+
+	sudo systemctl daemon-reload
+
+	echo $(tput setaf 2)"Complete configuration for swatcher.service on systemd"$(tput sgr0)
+	echo $(tput setaf 2)"You can check it loaded successfully using 'sudo systemctl status swatcher'"$(tput sgr0)
+}
+
+
 function setting_ftp_log() {
 	if [ "$(systemctl is-active --quiet vsftpd && echo 0)" != 0 ]; then
 		echo $(tput setaf 1)"[ERROR] 'vsftpd' doesn't active. or systemctl isn't exist. "$(tput sgr0)
@@ -141,6 +171,8 @@ function setting_ftp_log() {
 	sudo systemctl restart vsftpd.service
 }
 
+
+
 function run_swatcher() {
 	curl https://raw.githubusercontent.com/yousan/swatcher/master/etc/swatcher.sh | sudo bash -
 }
@@ -149,12 +181,9 @@ function run_swatcher() {
 check_permittion
 install_swatch
 set_config
-set_crontab
 set_script
-
 setting_ftp_log
-
-run_swatcher
+set_systemd
 
 
 echo $(tput setaf 2)"Complete configuration for 'swatcher'"$(tput sgr0)
