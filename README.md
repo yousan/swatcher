@@ -30,6 +30,12 @@ And also do restart.
 sudo systemctl restart swatcher
 ```
 
+# Uninstall
+If you uninstall swatcher, you can run this
+```bash
+curl https://raw.githubusercontent.com/yousan/swatch/master/uninit.sh | \
+sudo bash -
+```
 
 # Japanese Explanation (by [yousan](https://github.com/yousan))
 https://qiita.com/yousan/items/e89603ba1c638be5f1c7
