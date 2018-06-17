@@ -39,9 +39,13 @@ function uninstall_swatch() {
 }
 
 function uninit() {
+    rm -rf /etc/systemd/system/swatcher.service
+    systemctl stop swatcher && systemctl daemon-reload
+
     rm -rf /etc/swatch
     rm -rf /usr/local/bin/slack_notify
     rm -rf /etc/cron.d/swatchron
+    rm -rf /etc/init.d/*_swatcher.sh
 }
 
 # do
