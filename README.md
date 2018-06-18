@@ -1,4 +1,4 @@
-# What is swather?
+# What is Swatcher?
 `Swatcher` is a log watching tool that send important and specified logs to `slack INCOMING WEBHOOK` using [swatch](http://www.linux-mag.com/id/7807/). It corresponds now to `ssh` log and` ftp` log.
 
 # Install
