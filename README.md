@@ -4,7 +4,7 @@
 # Install
 Replace `YOUR_INCOMING_WEBHOOK_URL`, then run it.
 ```bash
-curl https://raw.githubusercontent.com/yousan/swatch/master/init.sh | \
+curl -sL https://raw.githubusercontent.com/yousan/swatch/master/init.sh | \
 sudo YOUR_INCOMING_WEBHOOK_URL=xxx bash - 
 ```
 
