@@ -3,7 +3,9 @@ USERNAME="SERVER GATEKEEPER"
 CHANNEL="#bot"
 ICON=":eye:"
 TEXT=$*
-WEBHOOK_URL="<YOUR_INCOMING_WEBHOOK_URL>"
+#WEBHOOK_URL="https://hooks.slack.com/services/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"
+tmp=$(cat /etc/swatcher/swatcher.conf | grep webhook_url)
+WEBHOOK_URL=${tmp#*=}
 
 author="sa9sha9"
 
