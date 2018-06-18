@@ -43,8 +43,7 @@ sudo systemctl enable swatcher
 # Uninstall
 If you uninstall swatcher, you can run this
 ```bash
-curl -sL https://raw.githubusercontent.com/yousan/swatch/master/uninit.sh | \
-sudo bash -
+curl -sL https://raw.githubusercontent.com/yousan/swatch/master/uninit.sh | sudo bash -
 ```
 
 # Configuration
