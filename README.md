@@ -35,7 +35,7 @@ And also do restart.
 sudo systemctl restart swatcher
 ```
 
-# Auto start when reboot
+# Auto start with reboot
 ```bash
 sudo systemctl enable swatcher
 ```
