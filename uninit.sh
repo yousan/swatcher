@@ -45,7 +45,7 @@ function uninit() {
     systemctl disable swatcher && \
     systemctl daemon-reload
 
-    rm -rf /etc/swatch
+    rm -rf /etc/swatcher
     rm -rf /usr/local/bin/slack_notify
     rm -rf /etc/cron.d/swatchron
 
