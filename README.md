@@ -9,7 +9,7 @@ sudo YOUR_INCOMING_WEBHOOK_URL=xxx bash -
 ```
 
 ### and!!
-You should change `<YOUR_INCOMING_WEBHOOK_URL>` in `/usr/local/bin/slack_notify.sh` if you didn't set `YOUR_INCOMING_WEBHOOK_URL` when installing.
+You should change `<YOUR_INCOMING_WEBHOOK_URL>` in `/etc/swatcher/swatcher.conf` if you didn't set `YOUR_INCOMING_WEBHOOK_URL` when installing.
 
 
 ### Check if `swatcher` is loaded successfully 
@@ -47,8 +47,9 @@ curl https://raw.githubusercontent.com/yousan/swatch/master/uninit.sh | \
 sudo bash -
 ```
 
+# Configuration
+You can change settings for swatcher on `/etc/swatcher/swatcher.conf`.
+
+
 # Japanese Explanation (by [yousan](https://github.com/yousan))
 https://qiita.com/yousan/items/e89603ba1c638be5f1c7
-
-# Future Wroks
-- Configure tool so that can change settings not only when initialization
