@@ -39,7 +39,7 @@ function install_swatch() {
 
 function set_config() {
     SWATCHER_CONFIG_DIR=/etc/swatcher
-    SWATCHER_CONFIG_DIR=swatcher.conf
+    SWATCHER_CONFIG_FILE=swatcher.conf
     [ ! -d $SWATCHER_CONFIG_DIR ] && mkdir -p $SWATCHER_CONFIG_DIR && cd $SWATCHER_CONFIG_DIR
 
 cat <<'EOT' | sudo tee $SWATCHER_CONFIG_DIR/$SWATCHER_CONFIG_FILE
