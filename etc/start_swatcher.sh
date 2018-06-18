@@ -22,7 +22,7 @@ check_dist() {
 
 start() {
     DISTRIBUTION=$(check_dist)
-	/var/run/swatch_*.pid > /dev/null 2>&1
+	/var/run/swatcher_*.pid > /dev/null 2>&1
     if [ $? -ne 0 ]; then
 #        echo -n "Starting swatch"
         for conf in /etc/swatcher/target/*.conf
