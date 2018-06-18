@@ -49,8 +49,10 @@ cat <<'EOT' | sudo tee $SWATCHER_CONFIG_DIR/$SWATCHER_CONFIG_FILE
 ftp=true
 ssh=true
 
-# Slack Incoming Webhook URL
+
+# Slack posted channel ( MAKE SURE PUT '#' at a head!!)
 post_channel=#bot
+# Slack Incoming Webhook URL
 webhook_url=<YOUR_INCOMING_WEBHOOK_URL>
 EOT
 
