@@ -15,14 +15,14 @@ function check_dist() {
 DISTRIBUTION=$(check_dist)
 if [[ $DISTRIBUTION =~ ubuntu || $DISTRIBUTION =~ debian ]]; then
     ps auxwwww | \
-    grep "/usr/bin/swatch --daemon --awk-field-syntax ; -c /etc/swatch/conf/secure.conf -t /var/log/auth.log" | \
+    grep "/usr/bin/swatch --daemon --awk-field-syntax ; -c /etc/swatcher/target/secure.conf -t /var/log/auth.log" | \
     grep -v 'grep' >/dev/null || \
-    sudo /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/secure.conf -t /var/log/auth.log
+    sudo /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatcher/target/secure.conf -t /var/log/auth.log
 elif [[ $DISTRIBUTION =~ centos ]]; then
     ps auxwwww | \
-    grep "/usr/bin/swatch --daemon --awk-field-syntax ; -c /etc/swatch/conf/secure.conf -t /var/log/secure" | \
+    grep "/usr/bin/swatch --daemon --awk-field-syntax ; -c /etc/swatcher/target/secure.conf -t /var/log/secure" | \
     grep -v 'grep' >/dev/null || \
-    sudo /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/secure.conf -t /var/log/secure
+    sudo /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatcher/target/secure.conf -t /var/log/secure
 else
     echo "Sorry, I can handle Ubuntu and CentOS only."
     exit 1
@@ -31,7 +31,7 @@ fi
 
 # watch for vsftpd
 ps auxwwww | \
-grep "/usr/bin/swatch --daemon --awk-field-syntax ; -c /etc/swatch/conf/ftpd.conf -t/var/log/vsftpd.log" | \
+grep "/usr/bin/swatch --daemon --awk-field-syntax ; -c /etc/swatcher/target/ftpd.conf -t/var/log/vsftpd.log" | \
 grep -v 'grep' >/dev/null || \
-sudo /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/ftpd.conf -t/var/log/vsftpd.log
+sudo /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatcher/target/ftpd.conf -t/var/log/vsftpd.log
 

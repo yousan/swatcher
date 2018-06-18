@@ -3,11 +3,11 @@ SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 @hourly root ps auxwwww | \
-				 grep "/usr/bin/swatch --daemon --awk-field-syntax ; -c /etc/swatch/conf/secure.conf -t /var/log/auth.log" | \
+				 grep "/usr/bin/swatch --daemon --awk-field-syntax ; -c /etc/swatcher/target/secure.conf -t /var/log/auth.log" | \
                  grep -v 'grep' >/dev/null || \
-                 sudo /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/secure.conf -t /var/log/auth.log
+                 sudo /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatcher/target/secure.conf -t /var/log/auth.log
 @hourly root ps auxwwww | \
-             grep "/usr/bin/swatch --daemon --awk-field-syntax ; -c /etc/swatch/conf/ftpd.conf -t/var/log/vsftpd.log" | \
+             grep "/usr/bin/swatch --daemon --awk-field-syntax ; -c /etc/swatcher/target/ftpd.conf -t/var/log/vsftpd.log" | \
              grep -v 'grep' >/dev/null || \
-             sudo /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatch/conf/ftpd.conf -t/var/log/vsftpd.log
+             sudo /usr/bin/swatch --daemon --awk-field-syntax ';' -c /etc/swatcher/target/ftpd.conf -t/var/log/vsftpd.log
 

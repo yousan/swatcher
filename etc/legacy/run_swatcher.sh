@@ -27,10 +27,10 @@ start() {
     if [ $? -ne 0 ]; then
         echo -n "Starting swatch"
         pno=0
-        for conf in /etc/swatch/*.conf
+        for conf in /etc/swatcher/*.conf
         do
             pno=`expr $pno + 1`
-            if [[ $conf =~ /etc/swatch/secure.conf ]]; then
+            if [[ $conf =~ /etc/swatcher/secure.conf ]]; then
 	            if [[ $DISTRIBUTION =~ ubuntu || $DISTRIBUTION =~ debian ]]; then
 	                WATCHLOG=/var/log/auth.log
 				elif [[ $DISTRIBUTION =~ centos ]]; then
@@ -45,7 +45,7 @@ start() {
             swatch --config-file $conf --tail-file $WATCHLOG \
             --script-dir=/tmp --awk-field-syntax --use-cpan-file-tail --daemon \
             --pid-file /var/run/swatch_$pno.pid \
-            >> /var/log/swatch/swatch.log 2>&1
+            >> /var/log/swatcher/swatch.log 2>&1
             RETVAL=$?
             [ $RETVAL != 0 ] && return $RETVAL
         done

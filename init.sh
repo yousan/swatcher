@@ -38,26 +38,26 @@ function install_swatch() {
 }
 
 function set_config() {
-    SWATCH_CONF_DIR=/etc/swatch/conf
-    [ ! -d $SWATCH_CONF_DIR ] && mkdir -p $SWATCH_CONF_DIR && cd $SWATCH_CONF_DIR
+    SWATCHER_TARGET_DIR=/etc/swatcher/target
+    [ ! -d $SWATCHER_TARGET_DIR ] && mkdir -p $SWATCHER_TARGET_DIR && cd $SWATCHER_TARGET_DIR
 
 #	for f in etc/conf/*
 #	do
 #		conf_file=$(basename $f)
-#	    curl "https://raw.githubusercontent.com/yousan/swatch/master/etc/$conf_file" > $SWATCH_CONF_DIR/$conf_file
-#        chmod 0644 $SWATCH_CONF_DIR/$conf_file
+#	    curl "https://raw.githubusercontent.com/yousan/swatch/master/etc/$conf_file" > $SWATCHER_TARGET_DIR/$conf_file
+#        chmod 0644 $SWATCHER_TARGET_DIR/$conf_file
 #	done
 
 	secure_conf
 	ftpd_conf
 
-    echo $(tput setaf 2)"saved conf files into $SWATCH_CONF_DIR/"$(tput sgr0)
+    echo $(tput setaf 2)"saved conf files into $SWATCHER_TARGET_DIR/"$(tput sgr0)
 }
 
 function secure_conf() {
-	SWATCH_CONF_DIR=/etc/swatch/conf
-	SWATCH_CONF_FILE=secure.conf
-	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
+	SWATCHER_TARGET_DIR=/etc/swatcher/target
+	SWATCHER_TARGET_FILE=secure.conf
+	cat <<'EOT' | sudo tee $SWATCHER_TARGET_DIR/$SWATCHER_TARGET_FILE
 watchfor /Accepted/
         exec "\/usr\/local\/bin\/slack_notify $* > /dev/null 2>&1"
 
@@ -73,20 +73,20 @@ watchfor /Accepted/
 watchfor /.*COMMAND.*/
          exec "\/usr\/local\/bin\/slack_notify $* > /dev/null 2>&1"
 EOT
-	chmod 0644 $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
+	chmod 0644 $SWATCHER_TARGET_DIR/$SWATCHER_TARGET_FILE
 }
 
 function ftpd_conf() {
-	SWATCH_CONF_DIR=/etc/swatch/conf
-	SWATCH_CONF_FILE=ftpd.conf
-	cat <<'EOT' | sudo tee $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
+	SWATCHER_TARGET_DIR=/etc/swatcher/target
+	SWATCHER_TARGET_FILE=ftpd.conf
+	cat <<'EOT' | sudo tee $SWATCHER_TARGET_DIR/$SWATCHER_TARGET_FILE
 # logfile /var/log/vsftpd.log
 
 # ftp ログイン
 watchfor /OK LOGIN/
          exec "\/usr\/local\/bin\/slack_notify $* > /dev/null 2>&1"
 EOT
-	sudo chmod 0644 $SWATCH_CONF_DIR/$SWATCH_CONF_FILE
+	sudo chmod 0644 $SWATCHER_TARGET_DIR/$SWATCHER_TARGET_FILE
 }
 
 function set_notify_script() {
