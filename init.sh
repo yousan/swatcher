@@ -38,15 +38,35 @@ function install_swatch() {
 }
 
 function set_config() {
+    SWATCHER_CONFIG_DIR=/etc/swatcher
+    SWATCHER_CONFIG_DIR=swatcher.conf
+    [ ! -d $SWATCHER_CONFIG_DIR ] && mkdir -p $SWATCHER_CONFIG_DIR && cd $SWATCHER_CONFIG_DIR
+
+cat <<'EOT' | sudo tee $SWATCHER_CONFIG_DIR/$SWATCHER_CONFIG_FILE
+# Targets
+# Now available 'ftp' and 'ssh' only.
+# Default is 'true'
+ftp=true
+ssh=true
+
+# Slack Incoming Webhook URL
+webhook_url=<YOUR_INCOMING_WEBHOOK_URL>
+EOT
+
+	# Replace webhook key
+    echo ${YOUR_INCOMING_WEBHOOK_URL:="<YOUR_INCOMING_WEBHOOK_URL>"}
+    if [ $YOUR_INCOMING_WEBHOOK_URL = "<YOUR_INCOMING_WEBHOOK_URL>" ]; then
+        echo $(tput setaf 3)"[WARNING] You should change '<YOUR_INCOMING_WEBHOOK_URL>' in '/etc/swatcher/swatcher.conf' if you didn't set 'YOUR_INCOMING_WEBHOOK_URL' when installing."$(tput sgr0)
+    fi
+	sudo sed -i -e "s@<YOUR_INCOMING_WEBHOOK_URL>@$YOUR_INCOMING_WEBHOOK_URL@g" $SWATCHER_CONFIG_DIR/$SWATCHER_CONFIG_FILE
+
+
+    echo $(tput setaf 2)"saved conf file into $SWATCHER_CONFIG_DIR"$(tput sgr0)
+}
+
+function set_target() {
     SWATCHER_TARGET_DIR=/etc/swatcher/target
     [ ! -d $SWATCHER_TARGET_DIR ] && mkdir -p $SWATCHER_TARGET_DIR && cd $SWATCHER_TARGET_DIR
-
-#	for f in etc/conf/*
-#	do
-#		conf_file=$(basename $f)
-#	    curl "https://raw.githubusercontent.com/yousan/swatch/master/etc/$conf_file" > $SWATCHER_TARGET_DIR/$conf_file
-#        chmod 0644 $SWATCHER_TARGET_DIR/$conf_file
-#	done
 
 	secure_conf
 	ftpd_conf
@@ -95,13 +115,6 @@ function set_notify_script() {
 
     curl $SLACK_NOTIFY_SCRIPT_URL | sudo tee $ACTION_SCRIPT_DEST/slack_notify
     sudo chmod 0755 /usr/local/bin/slack_notify
-
-	# Replace webhook key
-    echo ${YOUR_INCOMING_WEBHOOK_URL:="<YOUR_INCOMING_WEBHOOK_URL>"}
-    if [ $YOUR_INCOMING_WEBHOOK_URL = "<YOUR_INCOMING_WEBHOOK_URL>" ]; then
-        echo $(tput setaf 3)"[WARNING] You should change '<YOUR_INCOMING_WEBHOOK_URL>' in '/usr/bin/slack_notify' if you didn't set 'YOUR_INCOMING_WEBHOOK_URL' when installing."$(tput sgr0)
-    fi
-	sudo sed -i -e "s@<YOUR_INCOMING_WEBHOOK_URL>@$YOUR_INCOMING_WEBHOOK_URL@g" $ACTION_SCRIPT_DEST/slack_notify
 
     echo $(tput setaf 2)"saved into /usr/bin/slack_notify"$(tput sgr0)
 }
@@ -202,6 +215,7 @@ function run_swatcher() {
 # do
 check_permittion
 install_swatch
+set_target
 set_config
 set_notify_script
 setting_ftp_log
