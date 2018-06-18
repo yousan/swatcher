@@ -1,6 +1,8 @@
 #!/bin/bash
 USERNAME="SERVER GATEKEEPER"
-CHANNEL="#bot"
+#CHANNEL="#bot"
+tmp=$(cat /etc/swatcher/swatcher.conf | grep post_channel)
+CHANNEL=${tmp#*=}
 ICON=":eye:"
 TEXT=$*
 #WEBHOOK_URL="https://hooks.slack.com/services/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"

@@ -50,6 +50,7 @@ ftp=true
 ssh=true
 
 # Slack Incoming Webhook URL
+post_channel=#bot
 webhook_url=<YOUR_INCOMING_WEBHOOK_URL>
 EOT
 
